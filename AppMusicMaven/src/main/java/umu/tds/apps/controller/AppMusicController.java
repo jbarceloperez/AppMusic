@@ -17,7 +17,6 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import umu.tds.apps.models.Discount;
 import umu.tds.apps.models.EducationDiscount;
@@ -42,7 +41,8 @@ import umu.tds.componente.CargadorCanciones;
 public class AppMusicController implements CancionesListener{
 
 	private static AppMusicController instance = null;
-	private MediaPlayer mediaPlayer;
+//	private MediaPlayer mediaPlayer;
+	private Reproductor mediaPlayer;
 
 	private ISongAdapterDAO songAdapter;
 	private IUserAdapterDAO userAdapter;
@@ -60,12 +60,13 @@ public class AppMusicController implements CancionesListener{
 
 	private AppMusicController() {
 		this.currentUser= null;
-		try {
-			com.sun.javafx.application.PlatformImpl.startup(()->{});
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			System.out.println("Exception: " + ex.getMessage());
-		}
+//		try {
+//			com.sun.javafx.application.PlatformImpl.startup(()->{});
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//			System.out.println("Exception: " + ex.getMessage());
+//		}
+		mediaPlayer = new Reproductor();
 		cargadorCanciones = new CargadorCanciones();
 		cargadorCanciones.addCancionesListener(this);
 		initializeAdapters();
@@ -84,9 +85,9 @@ public class AppMusicController implements CancionesListener{
 		return currentUser;
 	}
 	
-	public MediaPlayer getMediaPlayer() {
-		return mediaPlayer;
-	}
+//	public MediaPlayer getMediaPlayer() {
+//		return mediaPlayer;
+//	}
 	
 	public boolean isRegistered(String username) {
 		return userRepo.getUser(username) != null;
@@ -173,17 +174,21 @@ public class AppMusicController implements CancionesListener{
 		return genres;
 	}
 
+//	public void playSong(String path) {
+//		File f = new File(path);
+//		String source = f.toURI().toString();
+//		if (mediaPlayer == null || !mediaPlayer.getMedia().getSource().equals(source)) {
+//			if (mediaPlayer != null) {
+//				mediaPlayer.dispose();
+//			}
+//			Media hit = new Media(source);
+//			mediaPlayer = new MediaPlayer(hit);
+//		}
+//		mediaPlayer.play();
+//	}
+//	
 	public void playSong(String path) {
-		File f = new File(path);
-		String source = f.toURI().toString();
-		if (mediaPlayer == null || !mediaPlayer.getMedia().getSource().equals(source)) {
-			if (mediaPlayer != null) {
-				mediaPlayer.dispose();
-			}
-			Media hit = new Media(source);
-			mediaPlayer = new MediaPlayer(hit);
-		}
-		mediaPlayer.play();
+		mediaPlayer.playSong(path);
 	}
 	
 	public void addPlayCount(Song song) {
@@ -193,7 +198,11 @@ public class AppMusicController implements CancionesListener{
 	}
 	
 	public void pauseSong() {
-		mediaPlayer.pause();
+		mediaPlayer.pauseSong();
+	}
+	
+	public MediaPlayer getMediaPlayer() {
+		return mediaPlayer.getMediaPlayer();
 	}
 	
 	//returns 

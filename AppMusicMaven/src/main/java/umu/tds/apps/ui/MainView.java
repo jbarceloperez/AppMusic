@@ -373,7 +373,7 @@ public class MainView implements ListSelectionListener{
 		}
 	}
 	
-	private void generateMostPlayedSongs() {
+	private void generateMostPlayedSongs() {	//TODO NO SE PUEDE CREAR UNA PLAYLIST EN LA VISTA
 //		System.out.println("aqui se genera la playlist con las canciones top");
 		PlayList mostPlayedSongs;
 		if (controller.existsPlaylist("Most Played Songs")!=null) {
