@@ -1,12 +1,21 @@
 package umu.tds.apps.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.EventObject;
 import java.util.List;
 import java.util.Optional;
+
+import javax.swing.JFileChooser;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -244,4 +253,33 @@ public class AppMusicController implements CancionesListener{
 	public void upgradeUser() {
 		currentUser.setPremium(true);
 	}
+	
+	public void generatePDF(String ruta) throws DocumentException, FileNotFoundException {
+		String sep = System.getProperty("os.name").startsWith("Windows") ? "\\" : "/";
+		FileOutputStream archivo = new FileOutputStream(ruta + sep + "AppMusicReport.pdf");
+		Document documento = new Document();
+		PdfWriter.getInstance(documento, archivo);
+		fillPDF(documento);
+	}
+	
+	private void fillPDF(Document doc) throws DocumentException {
+		doc.open();
+		doc.add(new Paragraph("                                                     AppMusic(c) Premium Document"));
+		doc.add(new Paragraph("\n\n"));
+		doc.add(new Paragraph("Este documento contiene todas las playlists con todas las canciones que las componen.\n\n"));
+		for (PlayList pl : getAllPlayLists()) {
+			doc.add(new Paragraph("Nombre: " + pl.getName() + ". Número de canciones: " + pl.getSongs().size()+".\n"));
+			for (Song s : pl.getSongs())
+				doc.add(new Paragraph("    Título: "+s.getTitle()+", Intérprete: "+s.getArtists()+", Estilo: "+s.getGenre()));
+			doc.add(new Paragraph("_______________________________________________________________________\n\n"));
+		}
+		doc.close();
+	}
 }
+
+
+
+
+
+
+

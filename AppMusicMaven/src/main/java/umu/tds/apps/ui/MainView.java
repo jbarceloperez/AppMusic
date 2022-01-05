@@ -360,13 +360,9 @@ public class MainView implements ListSelectionListener{
 	}
 	
 	private void generatePDF() {
-		String sep = System.getProperty("os.name").startsWith("Windows") ? "\\" : "/";
 		String ruta = new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
 		try {
-	    	FileOutputStream archivo = new FileOutputStream(ruta + sep + "AppMusicReport.pdf");
-			Document documento = new Document();
-			PdfWriter.getInstance(documento, archivo);
-			fillPDF(documento);
+	    	controller.generatePDF(ruta);
 			JOptionPane.showMessageDialog(frmMainView, "The PDF was succesfully generated at \"" + ruta + "\"" , "PDF generated!", JOptionPane.INFORMATION_MESSAGE);
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(frmMainView, "Error: The PDF could not be created", "PDF: Error", JOptionPane.ERROR_MESSAGE);
@@ -406,19 +402,6 @@ public class MainView implements ListSelectionListener{
 			controller.registerPlayList(mostPlayedSongs);
 	}
 
-	private void fillPDF(Document doc) throws DocumentException {
-		doc.open();
-		doc.add(new Paragraph("                                                     AppMusic(c) Premium Document"));
-		doc.add(new Paragraph("\n\n"));
-		doc.add(new Paragraph("Este documento contiene todas las playlists con todas las canciones que las componen.\n\n"));
-		for (PlayList pl : controller.getAllPlayLists()) {
-			doc.add(new Paragraph("Nombre: " + pl.getName() + ". Número de canciones: " + pl.getSongs().size()+".\n"));
-			for (Song s : pl.getSongs())
-				doc.add(new Paragraph("    Título: "+s.getTitle()+", Intérprete: "+s.getArtists()+", Estilo: "+s.getGenre()));
-			doc.add(new Paragraph("_______________________________________________________________________\n\n"));
-		}
-		doc.close();
-	}
 
 }
 
