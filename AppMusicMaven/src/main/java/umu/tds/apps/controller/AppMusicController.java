@@ -23,6 +23,7 @@ import umu.tds.apps.models.EducationDiscount;
 import umu.tds.apps.models.ElderDiscount;
 import umu.tds.apps.models.PlayList;
 import umu.tds.apps.models.PlayListRepo;
+import umu.tds.apps.models.PlayerSongs;
 import umu.tds.apps.models.Song;
 import umu.tds.apps.models.SongRepo;
 import umu.tds.apps.models.User;
@@ -41,8 +42,7 @@ import umu.tds.componente.CargadorCanciones;
 public class AppMusicController implements CancionesListener{
 
 	private static AppMusicController instance = null;
-//	private MediaPlayer mediaPlayer;
-	private Reproductor mediaPlayer;
+	private PlayerSongs mediaPlayer;
 
 	private ISongAdapterDAO songAdapter;
 	private IUserAdapterDAO userAdapter;
@@ -60,13 +60,7 @@ public class AppMusicController implements CancionesListener{
 
 	private AppMusicController() {
 		this.currentUser= null;
-//		try {
-//			com.sun.javafx.application.PlatformImpl.startup(()->{});
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//			System.out.println("Exception: " + ex.getMessage());
-//		}
-		mediaPlayer = new Reproductor();
+		mediaPlayer = new PlayerSongs();
 		cargadorCanciones = new CargadorCanciones();
 		cargadorCanciones.addCancionesListener(this);
 		initializeAdapters();
@@ -84,10 +78,6 @@ public class AppMusicController implements CancionesListener{
 	public User getCurrentUser() {
 		return currentUser;
 	}
-	
-//	public MediaPlayer getMediaPlayer() {
-//		return mediaPlayer;
-//	}
 	
 	public boolean isRegistered(String username) {
 		return userRepo.getUser(username) != null;
@@ -174,19 +164,6 @@ public class AppMusicController implements CancionesListener{
 		return genres;
 	}
 
-//	public void playSong(String path) {
-//		File f = new File(path);
-//		String source = f.toURI().toString();
-//		if (mediaPlayer == null || !mediaPlayer.getMedia().getSource().equals(source)) {
-//			if (mediaPlayer != null) {
-//				mediaPlayer.dispose();
-//			}
-//			Media hit = new Media(source);
-//			mediaPlayer = new MediaPlayer(hit);
-//		}
-//		mediaPlayer.play();
-//	}
-//	
 	public void playSong(String path) {
 		mediaPlayer.playSong(path);
 	}

@@ -22,7 +22,6 @@ public class UserAdapterTDS implements IUserAdapterDAO {
 	private static SimpleDateFormat dateFormat;
 	private ServicioPersistencia servicioPersistencia = FactoriaServicioPersistencia.getInstance()
 			.getServicioPersistencia();
-	private SongRepo songRepo = SongRepo.getInstance();
 
 	private static final String USER = "user";
 	private static final String NAME = "name";
@@ -144,7 +143,7 @@ public class UserAdapterTDS implements IUserAdapterDAO {
 		else {
 			String[] songIds = recentSongsString.split(" ");
 			List<String> sIds = new ArrayList<String>(Arrays.asList(songIds));
-			LinkedList<Song> recentSongs = (LinkedList<Song>) songRepo.getSongsFromIds(sIds);
+			LinkedList<Song> recentSongs = (LinkedList<Song>) SongRepo.getInstance().getSongsFromIds(sIds);
 			user.setRecentSongs(recentSongs);
 		}
 

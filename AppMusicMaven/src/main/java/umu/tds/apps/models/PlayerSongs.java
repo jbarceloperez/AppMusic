@@ -1,4 +1,4 @@
-package umu.tds.apps.controller;
+package umu.tds.apps.models;
 
 import java.io.File;
 
@@ -6,12 +6,12 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 
-public class Reproductor {
+public class PlayerSongs {
 	
 	private MediaPlayer mediaPlayer;
 
 	
-	public Reproductor() {
+	public PlayerSongs() {
 		try {
 			com.sun.javafx.application.PlatformImpl.startup(()->{});
 		} catch (Exception ex) {
